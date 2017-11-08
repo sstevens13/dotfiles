@@ -51,7 +51,6 @@
 #   2.  MAKE TERMINAL BETTER
 #   -----------------------------------------------------------------------------------------------------------------------------------------
 
-cdpr () { cd ~/axon/projects/"$1"; }          # cdp: start cd ~/axon/projects
 alias uuid='uuidgen'                          # generate uuid
 alias guid='uuidgen'                          # generate uuid
 
