@@ -1,0 +1,20 @@
+## setup bash
+ln -s ~/dotfiles/bash/.bashrc ~/.bashrc
+ln -s ~/dotfiles/bash/.bash_profile ~/.bash_profile
+ln -s ~/dotfiles/bash/.git-completion.bash ~/.git-completion.bash
+ln -s ~/dotfiles/bash/.axon.bash ~/.axon.bash
+
+## setup bash
+ln -s ~/dotfiles/vim/.vimrc ~/.vimrc
+#packages
+#pathogen
+#vim-sensible
+#vim-bracketed-paste
+git clone https://github.com/ConradIrwin/vim-bracketed-paste ~/.vim/bundle/vim-bracketed-paste
+#nerdtree
+git clone https://github.com/scrooloose/nerdtree.git ~/.vim/bundle/nerdtree
+
+## installs
+brew
+brew install ag
+brew install ssh-copy-id
