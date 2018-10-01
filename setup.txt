@@ -4,12 +4,13 @@ ln -s ~/dotfiles/bash/.bash_profile ~/.bash_profile
 ln -s ~/dotfiles/bash/.git-completion.bash ~/.git-completion.bash
 ln -s ~/dotfiles/bash/.axon.bash ~/.axon.bash
 
-## setup bash
+## setup vim
 ln -s ~/dotfiles/vim/.vimrc ~/.vimrc
 #packages
-#pathogen
-#vim-sensible
-#vim-bracketed-paste
+pathogen
+delimitMate //closing quotes and brackets
+vim-sensible //default behaviors
+// vim-bracketed-paste: handles tabs with pasting
 git clone https://github.com/ConradIrwin/vim-bracketed-paste ~/.vim/bundle/vim-bracketed-paste
 #nerdtree
 git clone https://github.com/scrooloose/nerdtree.git ~/.vim/bundle/nerdtree

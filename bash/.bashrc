@@ -12,8 +12,7 @@
 #  7.   System Operations & Information
 #  8.   Web Development
 #  9.   Git
-# 10.   ssh
-# 11.   edc-web
+# 10.   Frontend, React
 #
 #############################################################################################################################################
 
@@ -53,6 +52,7 @@
 
 alias uuid='uuidgen'                          # generate uuid
 alias guid='uuidgen'                          # generate uuid
+alias formatUuid='~/dotfiles/formatUuid.sh'   # format uuid
 
 alias cp='cp -iv'                             # Preferred 'cp' implementation
 alias mv='mv -iv'                             # Preferred 'mv' implementation
@@ -89,7 +89,7 @@ alias lr='ls -R | grep ":$" | sed -e '\''s/:$//'\'' -e '\''s/[^-][^\/]*\//--/g'\
 #   -----------------------------------------------------------------------------------------------------------------------------------------
 #   showa: to remind yourself of an alias (given some part of it)
 #   -----------------------------------------------------------------------------------------------------------------------------------------
-showa () { /usr/bin/grep --color=always -i -a1 $@ ~/.bashrc | grep -v '^\s*$' | less -FSRXc ; }
+showa () { /usr/bin/grep --color=always -i -a1 $@ ~/.bashrc ~/.axon.bash | grep -v '^\s*$' | less -FSRXc ; }
 
 
 #############################################################################################################################################
@@ -185,6 +185,11 @@ httpDebug () { /usr/bin/curl $@ -o /dev/null -w "dns: %{time_namelookup} connect
 #   -----------------------------------------------------------------------------------------------------------------------------------------
 source ~/.git-completion.bash
 
+parse_git_branch() {
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+export PS1="\u@\h \W\[\033[32m\]\$(parse_git_branch)\[\033[00m\] $ "
+
 alias gitls='git branch -a --sort=committerdate'          # git list branches
 alias gitrml='git branch -D'                              # git delete branch locally
 alias gitrmr='git push srs --delete'                      # git delete branch in remote (my fork)
@@ -193,10 +198,18 @@ alias gitsyncum='git checkout master; git fetch origin; git pull origin master; 
 alias gitcd='git checkout'                                # git checkout branch (Change Directory)
 alias gitmkdl='git checkout -b'                           # git make branch locally (MaKe DIRectory)
 alias gitmkdo='git push -u srs'                           # git make branch in origin (MaKe DIRectory)
-alias gitunadd='git reset HEAD'                           # git remove added listed files or all added files
 alias gitfp='git fetch -p origin; git fetch -p srs'       # git fetch & prune remote branches in base and personal repositories
 alias gitlog='git log --oneline --graph --decorate'       # show commit history with graph, decorate with commit details
 alias gituncommitlocal='git reset --soft HEAD~1'          # undo last commit, don't discard commited changes 
 
 source ~/.axon.bash
 
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+
+#############################################################################################################################################
+#   10. Frontend, React
+#   -----------------------------------------------------------------------------------------------------------------------------------------
+alias uiClean='lerna clean; yarn clean; yarn flow stop; yarn;'
+alias yarnclean='yarn clean && lerna clean --yes && yarn'
