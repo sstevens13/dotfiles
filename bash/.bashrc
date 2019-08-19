@@ -24,27 +24,33 @@
 #   Set Paths
 #   -----------------------------------------------------------------------------------------------------------------------------------------
 
-    export PATH="/usr/local/bin:$PATH"
-    export JAVA_HOME=$(/usr/libexec/java_home)
-    export AWS_ELASTICACHE_HOME="/Users/sstevens/dev_tools/AmazonElastiCacheCli-1.9.001"
-    export PATH="$PATH:$AWS_ELASTICACHE_HOME/bin"
-    export PATH="$PATH:$HOME/.rvm/bin"
-    export GOPATH=$HOME/go
-    export PATH=$PATH:$GOPATH/bin
-    export FIREFOXBINPATH="/Applications/Firefox.app/Contents/MacOS/firefox-bin"
-    export CHROMEBINPATH="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
-    export PATH=$PATH:$FIREFOXBINPATH:$CHROMEBINPATH
+export PATH="/usr/local/bin:$PATH"
+export JAVA_HOME=$(/usr/libexec/java_home)
+export AWS_ELASTICACHE_HOME="/Users/sstevens/dev_tools/AmazonElastiCacheCli-1.9.001"
+export PATH="$PATH:$AWS_ELASTICACHE_HOME/bin"
+export PATH="$PATH:$HOME/.rvm/bin"
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+export FIREFOXBINPATH="/Applications/Firefox.app/Contents/MacOS/firefox-bin"
+export CHROMEBINPATH="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
+export PATH=$PATH:$FIREFOXBINPATH:$CHROMEBINPATH
+
+alias j8='export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)'
+alias j10='export JAVA_HOME=$(/usr/libexec/java_home -v 10)'
+alias j11='export JAVA_HOME=$(/usr/libexec/java_home -v 11)'
 
 #   -----------------------------------------------------------------------------------------------------------------------------------------
 #   Set Default Editor
 #   -----------------------------------------------------------------------------------------------------------------------------------------
-    export EDITOR=/usr/bin/vim
+
+export EDITOR=/usr/bin/vim
 
 #   -----------------------------------------------------------------------------------------------------------------------------------------
 #   Set default blocksize for ls, df, du
 #   from this: http://hints.macworld.com/comment.php?mode=view&cid=24491
 #   -----------------------------------------------------------------------------------------------------------------------------------------
-    export BLOCKSIZE=1k
+
+export BLOCKSIZE=1k
 
 #############################################################################################################################################
 #   2.  MAKE TERMINAL BETTER
@@ -134,6 +140,7 @@ alias qfind="find . -name "                 # qfind:    Quickly search for file
 ff () { /usr/bin/find . -name "$@" ; }      # ff:       Find file under the current directory
 ffs () { /usr/bin/find . -name "$@"'*' ; }  # ffs:      Find file whose name starts with a given string
 ffe () { /usr/bin/find . -name '*'"$@" ; }  # ffe:      Find file whose name ends with a given string
+searchText () { grep -inr "$@" . ; }        # searchText: search current directly recursively for text, ignore case
 
 #   -----------------------------------------------------------------------------------------------------------------------------------------
 #   spotlight: Search for a file using MacOS Spotlight's metadata
@@ -149,14 +156,7 @@ ffe () { /usr/bin/find . -name '*'"$@" ; }  # ffe:      Find file whose name end
 #############################################################################################################################################
 #   6.  NETWORKING
 #   -----------------------------------------------------------------------------------------------------------------------------------------
-
-
-#   -----------------------------------------------------------------------------------------------------------------------------------------
-#   ii:  display useful host related informaton
-#   -----------------------------------------------------------------------------------------------------------------------------------------
-    ii() {
-        echo
-    }
+alias ip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
 
 
 #############################################################################################################################################
@@ -169,6 +169,7 @@ ffe () { /usr/bin/find . -name '*'"$@" ; }  # ffe:      Find file whose name end
 #   -----------------------------------------------------------------------------------------------------------------------------------------
     alias finderShowHidden='defaults write com.apple.finder ShowAllFiles TRUE'
     alias finderHideHidden='defaults write com.apple.finder ShowAllFiles FALSE'
+
 
 #############################################################################################################################################
 #   8.  WEB DEVELOPMENT
@@ -205,11 +206,15 @@ alias gituncommitlocal='git reset --soft HEAD~1'          # undo last commit, do
 source ~/.axon.bash
 
 
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-
-
 #############################################################################################################################################
 #   10. Frontend, React
 #   -----------------------------------------------------------------------------------------------------------------------------------------
-alias uiClean='lerna clean; yarn clean; yarn flow stop; yarn;'
-alias yarnclean='yarn clean && lerna clean --yes && yarn'
+alias yarnStop='yarn flow stop; yarn'
+alias yarnErrorCheck='yarn test --all; yarn run strings; yarn lint'
+
+
+
+#############################################################################################################################################
+#   10. intellij failure fix
+#   -----------------------------------------------------------------------------------------------------------------------------------------
+alias intellij='/Applications/IntelliJ\ IDEA.app/Contents/MacOS/idea &'
