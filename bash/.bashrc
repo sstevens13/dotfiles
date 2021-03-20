@@ -25,12 +25,14 @@
 #   -----------------------------------------------------------------------------------------------------------------------------------------
 
 export PATH="/usr/local/bin:$PATH"
+export PATH="/usr/local/opt/ruby/bin:$PATH"
 export JAVA_HOME=$(/usr/libexec/java_home)
 export AWS_ELASTICACHE_HOME="/Users/sstevens/dev_tools/AmazonElastiCacheCli-1.9.001"
 export PATH="$PATH:$AWS_ELASTICACHE_HOME/bin"
 export PATH="$PATH:$HOME/.rvm/bin"
 export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
+export GOROOT="$(brew --prefix golang)/libexec"
+export PATH="$PATH:$GOPATH/bin:$GOROOT/bin"
 export FIREFOXBINPATH="/Applications/Firefox.app/Contents/MacOS/firefox-bin"
 export CHROMEBINPATH="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 export PATH=$PATH:$FIREFOXBINPATH:$CHROMEBINPATH
@@ -38,6 +40,14 @@ export PATH=$PATH:$FIREFOXBINPATH:$CHROMEBINPATH
 alias j8='export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)'
 alias j10='export JAVA_HOME=$(/usr/libexec/java_home -v 10)'
 alias j11='export JAVA_HOME=$(/usr/libexec/java_home -v 11)'
+
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+# Mac specific
+export BASH_SILENCE_DEPRECATION_WARNING=1
 
 #   -----------------------------------------------------------------------------------------------------------------------------------------
 #   Set Default Editor
@@ -59,6 +69,8 @@ export BLOCKSIZE=1k
 alias uuid='uuidgen'                          # generate uuid
 alias guid='uuidgen'                          # generate uuid
 alias formatUuid='~/dotfiles/formatUuid.sh'   # format uuid
+
+alias ipaddress='curl ifconfig.co'            # get my ipaddress
 
 alias cp='cp -iv'                             # Preferred 'cp' implementation
 alias mv='mv -iv'                             # Preferred 'mv' implementation
@@ -195,13 +207,13 @@ alias gitls='git branch -a --sort=committerdate'          # git list branches
 alias gitrml='git branch -D'                              # git delete branch locally
 alias gitrmr='git push srs --delete'                      # git delete branch in remote (my fork)
 alias gitunadd='git reset HEAD'                           # git remove file from commit
-alias gitsyncum='git checkout master; git fetch origin; git pull origin master; git push --force srs master'       # git sync forked master with origin Master
+alias gitpm='git checkout master; git pull origin master; git fetch -p'    # pull master, prune
 alias gitcd='git checkout'                                # git checkout branch (Change Directory)
 alias gitmkdl='git checkout -b'                           # git make branch locally (MaKe DIRectory)
-alias gitmkdo='git push -u srs'                           # git make branch in origin (MaKe DIRectory)
-alias gitfp='git fetch -p origin; git fetch -p srs'       # git fetch & prune remote branches in base and personal repositories
+alias gitfp='git fetch -p origin;'                        # git fetch & prune remote branches in base and personal repositories
 alias gitlog='git log --oneline --graph --decorate'       # show commit history with graph, decorate with commit details
-alias gituncommitlocal='git reset --soft HEAD~1'          # undo last commit, don't discard commited changes 
+alias gituncommitlocal='git reset --soft HEAD~1'          # undo last commit, don't discard commited changes
+alias gitPasswd='git config --global credential.helper osxkeychain'        # update password on next git command that needs validation
 
 source ~/.axon.bash
 
@@ -210,7 +222,8 @@ source ~/.axon.bash
 #   10. Frontend, React
 #   -----------------------------------------------------------------------------------------------------------------------------------------
 alias yarnStop='yarn flow stop; yarn'
-alias yarnErrorCheck='yarn test --all; yarn run strings; yarn lint'
+alias yarnFix='lerna clean -y && rm -rf node_modules && yarn'
+alias yarnPrCheck='yarn test --all; yarn run strings; yarn lint; yarn typecheck --packages edc-web'
 
 
 
@@ -218,3 +231,12 @@ alias yarnErrorCheck='yarn test --all; yarn run strings; yarn lint'
 #   10. intellij failure fix
 #   -----------------------------------------------------------------------------------------------------------------------------------------
 alias intellij='/Applications/IntelliJ\ IDEA.app/Contents/MacOS/idea &'
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+#############################################################################################################################################
+#   11. echo-ed stuff
+#   -----------------------------------------------------------------------------------------------------------------------------------------
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
