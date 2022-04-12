@@ -29,25 +29,15 @@ export PATH="/usr/local/opt/ruby/bin:$PATH"
 export JAVA_HOME=$(/usr/libexec/java_home)
 export AWS_ELASTICACHE_HOME="/Users/sstevens/dev_tools/AmazonElastiCacheCli-1.9.001"
 export PATH="$PATH:$AWS_ELASTICACHE_HOME/bin"
-export PATH="$PATH:$HOME/.rvm/bin"
-export GOPATH=$HOME/go
-export GOROOT="$(brew --prefix golang)/libexec"
-export PATH="$PATH:$GOPATH/bin:$GOROOT/bin"
 export FIREFOXBINPATH="/Applications/Firefox.app/Contents/MacOS/firefox-bin"
 export CHROMEBINPATH="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 export PATH=$PATH:$FIREFOXBINPATH:$CHROMEBINPATH
 
-alias j8='export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)'
-alias j10='export JAVA_HOME=$(/usr/libexec/java_home -v 10)'
-alias j11='export JAVA_HOME=$(/usr/libexec/java_home -v 11)'
+export PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv virtualenv-init -)"
 
-# nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
-# Mac specific
-export BASH_SILENCE_DEPRECATION_WARNING=1
+alias j17='export JAVA_HOME=$(/usr/libexec/java_home -v 17)'
 
 #   -----------------------------------------------------------------------------------------------------------------------------------------
 #   Set Default Editor
@@ -61,6 +51,29 @@ export EDITOR=/usr/bin/vim
 #   -----------------------------------------------------------------------------------------------------------------------------------------
 
 export BLOCKSIZE=1k
+
+#   -----------------------------------------------------------------------------------------------------------------------------------------
+#   Set Prompt
+#   -----------------------------------------------------------------------------------------------------------------------------------------
+
+parse_git_branch() {
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+export PS1="\W\[\033[32m\]\$(parse_git_branch)\[\033[00m\] > "
+export PS2="> "
+
+#   -----------------------------------------------------------------------------------------------------------------------------------------
+#   add spellcheck
+#   -----------------------------------------------------------------------------------------------------------------------------------------
+
+shopt -s cdspell
+
+#   -----------------------------------------------------------------------------------------------------------------------------------------
+#   Add work settings
+#   -----------------------------------------------------------------------------------------------------------------------------------------
+
+source ~/.work.bash
+
 
 #############################################################################################################################################
 #   2.  MAKE TERMINAL BETTER
@@ -90,14 +103,14 @@ alias ~="cd ~"                                # ~:            Go Home
 alias c='clear'                               # c:            Clear terminal display
 alias which='type -all'                       # which:        Find executables
 alias path='echo -e ${PATH//:/\\n}'           # path:         Echo all executable Paths
-alias show_options='shopt'                    # Show_options: display bash options settings
 alias fix_stty='stty sane'                    # fix_stty:     Restore terminal settings when screwed up
 alias cic='set completion-ignore-case On'     # cic:          Make tab-completion case-insensitive
 alias showfiles='defaults write com.apple.finder AppleShowAllFiles'           # show all files in finder [showfiles yes], hide files [showfiles no]
 mcd () { mkdir -p "$1" && cd "$1"; }          # mcd:          Makes new Dir and jumps inside
 trash () { command mv "$@" ~/.Trash ; }       # trash:        Moves a file to the MacOS trash
 ql () { qlmanage -p "$*" >& /dev/null; }      # ql:           Opens any file in MacOS Quicklook Preview
-alias DT='tee ~/Desktop/terminalOut.txt'      # DT:           Pipe content to file on MacOS Desktop
+alias sout='tee ~/Desktop/terminalOut.txt'    # sout:         Save Output to file on MacOS Desktop
+
 
 #   -----------------------------------------------------------------------------------------------------------------------------------------
 #   lr:  Full Recursive Directory Listing
@@ -107,7 +120,7 @@ alias lr='ls -R | grep ":$" | sed -e '\''s/:$//'\'' -e '\''s/[^-][^\/]*\//--/g'\
 #   -----------------------------------------------------------------------------------------------------------------------------------------
 #   showa: to remind yourself of an alias (given some part of it)
 #   -----------------------------------------------------------------------------------------------------------------------------------------
-showa () { /usr/bin/grep --color=always -i -a1 $@ ~/.bashrc ~/.axon.bash | grep -v '^\s*$' | less -FSRXc ; }
+showa () { /usr/bin/grep --color=always -i -a1 $@ ~/.bashrc ~/.work.bash | grep -v '^\s*$' | less -FSRXc ; }
 
 
 #############################################################################################################################################
@@ -196,12 +209,6 @@ httpDebug () { /usr/bin/curl $@ -o /dev/null -w "dns: %{time_namelookup} connect
 #############################################################################################################################################
 #   9. Git
 #   -----------------------------------------------------------------------------------------------------------------------------------------
-source ~/.git-completion.bash
-
-parse_git_branch() {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
-}
-export PS1="\u@\h \W\[\033[32m\]\$(parse_git_branch)\[\033[00m\] $ "
 
 alias gitls='git branch -a --sort=committerdate'          # git list branches
 alias gitrml='git branch -D'                              # git delete branch locally
@@ -215,8 +222,10 @@ alias gitlog='git log --oneline --graph --decorate'       # show commit history 
 alias gituncommitlocal='git reset --soft HEAD~1'          # undo last commit, don't discard commited changes
 alias gitPasswd='git config --global credential.helper osxkeychain'        # update password on next git command that needs validation
 
-source ~/.axon.bash
-
+# use git completion
+if [ -f ~/.git-completion.bash ]; then
+  . ~/.git-completion.bash
+fi
 
 #############################################################################################################################################
 #   10. Frontend, React

@@ -1,21 +1,47 @@
-## setup bash
+##  -----------------------------------------------------------------
+##  macbook setup
+##  -----------------------------------------------------------------
+// install iterm2
+// install karabiner
+// install bartender
+
+## install homebrew (https://brew.sh/)
+brew install ag
+brew install ssh-copy-id
+
+## upgrade bash
+brew install bash
+// set bash to default
+echo $BASH_VERSION
+/bin/bash --version
+which -a bash // copy /usr/local/....
+sudo vim /etc/shells
+// add "/usr/local/bin/bash" to shells file
+sudo chsh -s /usr/local/bin/bash
+
+// install java (openjdk)
+
+// install python
+// use pyenv: https://realpython.com/intro-to-pyenv/
+brew install openssl readline sqlite3 xz zlib
+curl https://pyenv.run | bash
+// install 2.7 and 1 major version behind latest version
+
+## setup bash runtime config
 ln -s ~/dotfiles/bash/.bashrc ~/.bashrc
 ln -s ~/dotfiles/bash/.bash_profile ~/.bash_profile
-ln -s ~/dotfiles/bash/.git-completion.bash ~/.git-completion.bash
-ln -s ~/dotfiles/bash/.axon.bash ~/.axon.bash
+# work rc placeholder
+touch ~/.work.bash
+
+## setup git-completion
+curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
 
 ## setup vim
 ln -s ~/dotfiles/vim/.vimrc ~/.vimrc
-#packages
-pathogen
-delimitMate //closing quotes and brackets
-vim-sensible //default behaviors
-// vim-bracketed-paste: handles tabs with pasting
-git clone https://github.com/ConradIrwin/vim-bracketed-paste ~/.vim/bundle/vim-bracketed-paste
-#nerdtree
-git clone https://github.com/scrooloose/nerdtree.git ~/.vim/bundle/nerdtree
+mkdir ~/.vim/bundle
+## install vundle: https://github.com/VundleVim/Vundle.vim
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+vim +PluginInstall +qall
 
-## installs
-brew
-brew install ag
-brew install ssh-copy-id
+
+# TODO create work repo for .work.bash
